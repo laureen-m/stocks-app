@@ -1,7 +1,7 @@
 class StocksController < ApplicationController
   def index
     stock = Stock.all.order(name: :asc)
-    stock json: stock
+    render json: stock
   end
 
   def create
