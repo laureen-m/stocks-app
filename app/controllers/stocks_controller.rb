@@ -20,7 +20,5 @@ class StocksController < ApplicationController
     def stock
       @stock ||= Stock.find(params[:id])
     end
-  
-  end
 
 end

@@ -7,21 +7,28 @@ function Stocks() {
   useEffect(() => {
     fetch('stocks/index')
       .then(response => response.json())
-      .then(response => setStocks({ stocks: response }))
+      .then(data => setStocks(data))
       .then(console.log(stocks))
       /*.catch(() => history.push('/'))*/;
-  });
+  }, []);
 
-  const allStocks = stocks.map((stock, index) => (
+  /*const allStocks = stocks.map((stock, index) => (
     <div key={index}>
       <h5>{stock.name}</h5>
     </div>
-  ));
+  ));*/
 
   return (
     <div>
       <h1>List of stocks</h1>
-      <div>{allStocks}</div>
+      {
+        stocks.map(stocks => (
+          <div key={stocks.id}>
+            <h5>{stocks.name}</h5>
+          </div>
+        ))
+      }
+     {/* <div>{allStocks}</div>*/}
       <Link to="/">Home</Link>
     </div>
   );
