@@ -1,0 +1,3 @@
+class ValuesController < ApplicationController
+  
+end
