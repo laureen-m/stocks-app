@@ -24,7 +24,4 @@ class StockData < Kimurai::Base
     #   Stock.where(item).first
     # end
   end
-
-
-
 end
