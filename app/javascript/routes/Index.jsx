@@ -11,8 +11,6 @@ export default (
       <Route path="/" exact component={Home} />
       <Route path="/stocks" exact component={Stocks} />
       <Route path="/stocks/:id" exact component={Stock} />
-      {/* # The page we should be visiting is http://localhost:3000/stocks/1
-      This wasn't broken, but I believe it's a better practice to nest like ^*/}
       <Route path="/stockdata" exact component={StockData} />
     </Switch>
   </Router>
