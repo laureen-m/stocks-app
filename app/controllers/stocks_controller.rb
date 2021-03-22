@@ -1,24 +1,27 @@
+require 'pry'
+
 class StocksController < ApplicationController
   def index
-    stock = Stock.all.order(name: :asc)
-    render json: stock
+    stocks = Stock.all.order(name: :asc)
+    render json: stocks
+    # ^ Just renaming for clarity.
   end
 
   def create
   end
 
+  def new
+  end
+
   def show
-    if stock
-      render json: stock
-    else
-      render json: stock.errors
-    end
+    # binding.pry
+    # Using your original code, if you put a binding.pry here, you can see that the endpoint isn't being hit yet when visiting the http://localhost:3000/stock/1 page.
+    render json: stock
   end
   
   private
 
     def stock
-      @stock ||= Stock.find(params[:id])
+      @stock = Stock.find(params[:id])
     end
-
 end

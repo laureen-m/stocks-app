@@ -1,0 +1,3 @@
+class SclvaluesController < ApplicationController
+  
+end
