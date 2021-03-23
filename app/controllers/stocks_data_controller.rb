@@ -18,10 +18,7 @@ class StocksDataController < ApplicationController
     #   :visits=>{:requests=>1, :responses=>1},
     #   :items=>{:sent=>0, :processed=>0},
     #   :events=>{:requests_errors=>{}, :drop_items_errors=>{}, :custom=>{}}}
-
-    scraped_data = StockData.crawl!
-    render json:scraped_data
-    # ^ The addition of this line was needed.
-    # The beginning of this article has a little more on this change to serving JSON to the client: https://dev.to/norrischebl/using-rails-api-with-react-4cg0
+    scraped_data = StockData.crawl! #(:parse, url: "https://www.bloomberg.com/markets2/api/intraday/FLGT%3AUS?days=1&interval=1&volumeInterval=1")
+    render json: scraped_data
   end
 end

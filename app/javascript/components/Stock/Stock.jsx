@@ -16,6 +16,7 @@ function Stock() {
     <div>
       <h1>{stock.name}</h1>
       <div>This is where I want to have filters and graphs for the stock data.</div>
+      <br />
       <Link to="/">Home</Link>
     </div>
   );
