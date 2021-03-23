@@ -5,13 +5,14 @@ export default () => (
   <div>
     <h1>Stocks App</h1>
       <p>
-        A curated list of stock for the best returns.
+        A curated list of stocks to get the best returns.
       </p>
+      <br />
       <Link
         to="/stocks"
         role="button"
       >
-        View Stocks
+        View available stocks
       </Link>  
     </div>
 );
