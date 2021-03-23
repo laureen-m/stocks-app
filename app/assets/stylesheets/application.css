@@ -14,5 +14,16 @@
  *= require_self
  */
 body {
-  background-color: antiquewhite;
+  background-color: rgb(32, 32, 32);
+  color: whitesmoke;
+}
+
+a {
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  font-size: 105%;
 }
