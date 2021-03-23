@@ -26,7 +26,9 @@ function StockInfo() {
   }, []);*/
 
   const handleClick = () => {
-    fetch("stocks_data/scrape")
+    fetch("stocks_data/scrape", {
+      method: 'post'
+    })
       // A GET is the default method for fetch requests. See here: https://github.github.io/fetch/.
       // The result of the scrape endpoint (the response.json()) is:
       // {
@@ -62,11 +64,10 @@ function StockInfo() {
   return (
     <div>
       <h1>Stock Data</h1>
-      {/*<button onClick = {() => { onSubmit() }}>Scrape data</button><br />*/}
       <div>
         <button onClick={handleClick}>Scrape!</button>
-        {stockPrice && <div>{stockPrice}</div>}
-        {/* Doing this ^ (with the brackets and &&) means that the div for the stockPrice only appears when there's a value for it. 
+        {/*stockPrice && <div>{stockPrice}</div>}
+        Doing this ^ (with the brackets and &&) means that the div for the stockPrice only appears when there's a value for it. 
         Otherwise, without this, you just have an empty div on your page. Which isn't terrible, but isn't desirable. */}
       </div>
       <br />
