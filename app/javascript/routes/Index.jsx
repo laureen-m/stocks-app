@@ -1,9 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Home from "../components/Home/Home";
-import Stocks from "../components/Stocks/Stocks";
-import Stock from "../components/Stock/Stock";
-import StockData from "../components/StockData/StockData";
+import "tachyons";
+import Home from "../components/Home";
+import Stocks from "../components/Stocks";
+import Stock from "../components/Stock";
+import StockData from "../components/StockData";
 
 export default (
   <Router>
