@@ -16,6 +16,7 @@
 body {
   background-color: rgb(32, 32, 32);
   color: whitesmoke;
+  padding: 25px;
 }
 
 a {
