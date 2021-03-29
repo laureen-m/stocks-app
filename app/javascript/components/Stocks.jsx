@@ -32,12 +32,12 @@ function Stocks() {
       <Link to="/">Home</Link>
       <h1>List of stocks</h1>
       <div className="flex flex-row justify-center">
-        <DropdownButton id="dropdown-basic-button" title={selectedStock} variant="light" className="ma3" onSelect={handleSelect}>
+        <DropdownButton id="dropdown-basic-button" title={selectedStock} className="ma3" onSelect={handleSelect}>
           { stocks.map(stocks => (
             <Dropdown.Item key={stocks.id} eventKey={stocks.id} className="flex flex-column pa1">{stocks.name}</Dropdown.Item>
           ))}
         </DropdownButton>
-        <Button variant="light" className="ma3" onClick={handleClick}>Analyze</Button>
+        <Button className="ma3" onClick={handleClick}>Analyze</Button>
       </div>
     </div>
   );

@@ -1,3 +1,3 @@
 class Stock < ApplicationRecord
-  has_many :sclvalues
+  has_many :stocksvalue
 end

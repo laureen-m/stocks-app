@@ -1,3 +1,0 @@
-class SclvaluesController < ApplicationController
-  
-end
