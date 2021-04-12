@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
+import StockPage from './common/StockPage';
 
 function Stocks() {
   const [stocks, setStocks] = useState([]);
@@ -28,8 +28,7 @@ function Stocks() {
   };
 
   return (
-    <div>
-      <Link to="/">Home</Link>
+    <StockPage>
       <h1>List of stocks</h1>
       <div className="flex flex-row justify-center">
         <DropdownButton id="dropdown-basic-button" title={selectedStock} className="ma3" onSelect={handleSelect}>
@@ -39,7 +38,7 @@ function Stocks() {
         </DropdownButton>
         <Button className="ma3" onClick={handleClick}>Analyze</Button>
       </div>
-    </div>
+    </StockPage>
   );
 }
 export default Stocks;

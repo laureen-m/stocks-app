@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import Button from 'react-bootstrap/Button';
+import StockPage from './common/StockPage';
 
 function StockInfo() {
 
@@ -33,9 +33,6 @@ function StockInfo() {
       //       "custom": {}
       //   }
       // }
-      // And the result of the scrape is not stock-specific, is it? I'm not sure what you want to display in the return for this page, other than the "Scrape" button.
-      // I see the "stockPrice" in a div below to be rendered, but I don't see how this fetch call returns a response for setting that value.
-      // You could flash a message or something that says something along the lines of "Scrape successful/failed" and/or redirect to the homepage or something. At least as a first pass?
       .then((response) => response.json())
       .then((data) => console.log(data));
     // With these changes, you can see your result in the console!
@@ -110,7 +107,7 @@ function StockInfo() {
   };
 
   return (
-    <div>
+    <StockPage>
       <h1>Stock Data</h1>
       <div>
         <Button onClick={() => {getSclData(), getAcbData(), getFgltData(), getLspdData()}}>Get more recent data!</Button>
@@ -118,9 +115,7 @@ function StockInfo() {
         Doing this ^ (with the brackets and &&) means that the div for the stockPrice only appears when there's a value for it. 
         Otherwise, without this, you just have an empty div on your page. Which isn't terrible, but isn't desirable. */}
       </div>
-      <br />
-      <Link to="/">Home</Link>
-    </div>
+    </StockPage>
   );
 }
 export default StockInfo;
