@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Logo from "../../../assets/images/logo.jpg";
 import styled from "styled-components";
+import Logo from "../../../assets/images/logo.jpg";
 
 const HeaderStyle = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   background: white;
-  padding: 10px;
+  padding: 12px;
   color: black;
   height: 10%;
   a {
