@@ -11,13 +11,22 @@ const HomePageStyle = styled.div`
   background-position: center center;
   width: 100%;
   min-height: 100vh;
-  .enter {
+  position: relative;
+  .center {
+    margin: 0;
+    position: absolute;
+    top: 82%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .enter-link {
     color: black;
     font-size: 40px;
     text-decoration: none;
     position: relative;
   }
-  .enter::before {
+  .enter-link::before {
   content: "";
   position: absolute;
   width: 100%;
@@ -29,7 +38,7 @@ const HomePageStyle = styled.div`
   transform: scaleX(0);
   transition: all 0.3s ease-in-out 0s;
   }
-  .enter:hover::before {
+  .enter-link:hover::before {
     visibility: visible;
     transform: scaleX(1);
   }
@@ -38,6 +47,8 @@ const HomePageStyle = styled.div`
 export default () => (
   <HomePageStyle>
     <Header />
-    <Link className="enter" to="/stocks">Enter</Link> 
+    <div className="center">
+      <Link className="enter-link" to="/stocks">Enter</Link> 
+    </div>
   </HomePageStyle>
 );
