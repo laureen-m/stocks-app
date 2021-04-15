@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../../assets/images/logo.jpg";
 
@@ -47,8 +47,8 @@ function Header() {
         className="w4"
       />
       <div className="pt2">
-        <Link className="mr2" to="/">Home</Link>
-        <Link className="ml2" to="/stocks">Select stocks</Link>
+        <NavLink activeStyle={{ backgroundImage: "linear-gradient(yellow, yellow)", backgroundPosition: "0 95%", backgroundRepeat: "no-repeat", backgroundSize: "100% 6px" }} className="mr2" to="/" exact>Home</NavLink>
+        <NavLink activeStyle={{ backgroundImage: "linear-gradient(yellow, yellow)", backgroundPosition: "0 95%", backgroundRepeat: "no-repeat", backgroundSize: "100% 6px" }} className="ml2" to="/stocks" exact>Select stocks</NavLink>
       </div>  
     </HeaderStyle>
   );
