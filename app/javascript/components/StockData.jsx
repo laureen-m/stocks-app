@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
-import Button from 'react-bootstrap/Button';
+/*import PageWrapper from './common/PageWrapper';*/
+import Header from './common/Header';
 
 function StockInfo() {
 
@@ -111,15 +110,14 @@ function StockInfo() {
 
   return (
     <div>
+      <Header />
       <h1>Stock Data</h1>
       <div>
-        <Button onClick={() => {getSclData(), getAcbData(), getFgltData(), getLspdData()}}>Get more recent data!</Button>
+        <button onClick={() => {getSclData(), getAcbData(), getFgltData(), getLspdData()}}>Get more recent data!</button>
         {/*stockPrice && <div>{stockPrice}</div>}
         Doing this ^ (with the brackets and &&) means that the div for the stockPrice only appears when there's a value for it. 
         Otherwise, without this, you just have an empty div on your page. Which isn't terrible, but isn't desirable. */}
       </div>
-      <br />
-      <Link to="/">Home</Link>
     </div>
   );
 }
