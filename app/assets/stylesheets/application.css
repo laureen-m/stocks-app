@@ -13,18 +13,13 @@
  *= require_tree .
  *= require_self
  */
+
+html {
+  height: auto;
+  width: 100%;
+}
+
 body {
   background-color: rgb(32, 32, 32);
   color: whitesmoke;
-  padding: 25px;
-}
-
-a {
-  color: whitesmoke;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-  font-size: 105%;
 }
