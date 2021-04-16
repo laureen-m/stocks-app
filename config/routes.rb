@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  post 'stocks_data/scrape'
+  # post 'stocks_values/scrape'
   get 'stocks/index'
   get '/show/:id', to: 'stocks#show'
   root 'home#index'
