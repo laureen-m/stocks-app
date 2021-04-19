@@ -1,12 +1,15 @@
-class StocksValuesController < ApplicationController
+class ValuesController < ApplicationController
   def index
   end
 
-  def save
+  def create
     byebug
   end
 
-  # def scrape
+  def show
+  end
+
+  #  def scrape
     # binding.pry
     # Putting a binding.pry here helps you to see in the terminal what the response of this method is.
     # scrape returns:

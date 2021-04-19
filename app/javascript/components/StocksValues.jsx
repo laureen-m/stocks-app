@@ -186,7 +186,7 @@ function StocksValues() {
       object = data[i]
       console.log(object)
 
-      fetch("stocks_values/save", {
+      fetch("values/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
