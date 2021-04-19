@@ -3,6 +3,7 @@ class StocksValuesController < ApplicationController
   end
 
   def save
+    byebug
   end
 
   # def scrape

@@ -79,6 +79,9 @@ button, textarea:focus {
 
 function StocksValues() {
   const [stocks, setStocks] = useState([]);
+  const [price, setPrice] = useState([]);
+  const [volume, setVolume] = useState([]);
+  const [stockId, setStockId] = useState('');
 
   useEffect(() => {
     fetch('stocks/index')
@@ -86,6 +89,27 @@ function StocksValues() {
       .then(data => setStocks(data))
       .catch(console.log)
   }, []);
+
+  const handleChangeStockId = (event) => {
+    setStockId(event.target.value);
+  }
+
+  const handleChangePrice = (event) => {
+    setPrice(event.target.value);
+  }
+
+  const handleChangeVolume = (event) => {
+    setVolume(event.target.value);
+  }
+
+  const handleChangeDate = (event) => {
+    setDate(event.target.value);
+  }
+
+  const handleChangeTime = (event) => {
+    setTime(event.target.value);
+  }
+
 
   /*const handleClick = () => {
     fetch("stocks_values/scrape", {
@@ -121,7 +145,7 @@ function StocksValues() {
       .then((response) => response.json())
       .then((data) => console.log(data));
     // With these changes, you can see your result in the console!
-  };*/
+  };
 
   const getSclData = () => {
     const jsonValue = '[{"dateTime":"2021-03-26T13:30:00Z","value":61.01},{"dateTime":"2021-03-26T13:33:00Z","value":60.67},{"dateTime":"2021-03-26T13:34:00Z","value":60.5},{"dateTime":"2021-03-26T13:35:00Z","value":60.84},{"dateTime":"2021-03-26T13:36:00Z","value":60.76},{"dateTime":"2021-03-26T13:37:00Z","value":60.92},{"dateTime":"2021-03-26T13:38:00Z","value":60.93},{"dateTime":"2021-03-26T13:39:00Z","value":61.1},{"dateTime":"2021-03-26T13:40:00Z","value":61.27}]'
@@ -138,93 +162,75 @@ function StocksValues() {
       } 
     }
     console.log("SCL", sclData)
-  };
+  };*/
 
-  const getFgltData = () => {
-    const jsonValue = '[{"dateTime":"2021-03-26T13:30:00Z","value":61.01},{"dateTime":"2021-03-26T13:33:00Z","value":60.67},{"dateTime":"2021-03-26T13:34:00Z","value":60.5},{"dateTime":"2021-03-26T13:35:00Z","value":60.84},{"dateTime":"2021-03-26T13:36:00Z","value":60.76},{"dateTime":"2021-03-26T13:37:00Z","value":60.92},{"dateTime":"2021-03-26T13:38:00Z","value":60.93},{"dateTime":"2021-03-26T13:39:00Z","value":61.1},{"dateTime":"2021-03-26T13:40:00Z","value":61.27}]'
-    const jsonVolume = '[{"dateTime":"2021-03-26T13:30:00Z","value":61.01},{"dateTime":"2021-03-26T13:33:00Z","value":60.67},{"dateTime":"2021-03-26T13:34:00Z","value":60.5},{"dateTime":"2021-03-26T13:35:00Z","value":60.84},{"dateTime":"2021-03-26T13:36:00Z","value":60.76},{"dateTime":"2021-03-26T13:37:00Z","value":60.92},{"dateTime":"2021-03-26T13:38:00Z","value":60.93},{"dateTime":"2021-03-26T13:39:00Z","value":61.1},{"dateTime":"2021-03-26T13:40:00Z","value":61.27}]'
-    const parsedValue = JSON.parse(jsonValue);
-    const parsedVolume = JSON.parse(jsonVolume);
-    const fgltData = [];
+  const handleClick = () => {
+    const parsedPrice = JSON.parse(price);
+    const parsedVolume = JSON.parse(volume);
+    const data = [];
+    let object;
    
-    for (var i = 0; i < parsedValue.length; i++) {
+    for (var i = 0; i < parsedPrice.length; i++) {
       for (var j = 0; j < parsedVolume.length; j++) {
-        if (parsedValue[i].dateTime === parsedVolume[j].dateTime) {
-          fgltData.push({stock_id: 2, date: parsedValue[i].dateTime.slice(0, 10), time: parsedValue[i].dateTime.slice(11, 19), price: parsedValue[i].value, volume: parsedVolume[j].value})         
+        const price = parsedPrice[i].value;
+        const volume = parsedVolume[j].value;
+        const date = parsedPrice[i].dateTime.slice(0, 10);
+        const time = parsedPrice[i].dateTime.slice(11, 19);
+        if (parsedPrice[i].dateTime === parsedVolume[j].dateTime) {
+          data.push({stockId, date, time, price, volume})         
         } 
       } 
     }
-    console.log("FGLT", fgltData)
-  };
 
-  const getAcbData = () => {
-    const jsonValue = '[{"dateTime":"2021-03-26T13:30:00Z","value":61.01},{"dateTime":"2021-03-26T13:33:00Z","value":60.67},{"dateTime":"2021-03-26T13:34:00Z","value":60.5},{"dateTime":"2021-03-26T13:35:00Z","value":60.84},{"dateTime":"2021-03-26T13:36:00Z","value":60.76},{"dateTime":"2021-03-26T13:37:00Z","value":60.92},{"dateTime":"2021-03-26T13:38:00Z","value":60.93},{"dateTime":"2021-03-26T13:39:00Z","value":61.1},{"dateTime":"2021-03-26T13:40:00Z","value":61.27}]'
-    const jsonVolume = '[{"dateTime":"2021-03-26T13:30:00Z","value":61.01},{"dateTime":"2021-03-26T13:33:00Z","value":60.67},{"dateTime":"2021-03-26T13:34:00Z","value":60.5},{"dateTime":"2021-03-26T13:35:00Z","value":60.84},{"dateTime":"2021-03-26T13:36:00Z","value":60.76},{"dateTime":"2021-03-26T13:37:00Z","value":60.92},{"dateTime":"2021-03-26T13:38:00Z","value":60.93},{"dateTime":"2021-03-26T13:39:00Z","value":61.1},{"dateTime":"2021-03-26T13:40:00Z","value":61.27}]'
-    const parsedValue = JSON.parse(jsonValue);
-    const parsedVolume = JSON.parse(jsonVolume);
-    const acbData = [];
-   
-    for (var i = 0; i < parsedValue.length; i++) {
-      for (var j = 0; j < parsedVolume.length; j++) {
-        if (parsedValue[i].dateTime === parsedVolume[j].dateTime) {
-          acbData.push({stock_id: 4, date: parsedValue[i].dateTime.slice(0, 10), time: parsedValue[i].dateTime.slice(11, 19), price: parsedValue[i].value, volume: parsedVolume[j].value})         
-        } 
-      } 
-    }
-    console.log("ACB", acbData)
-  };
+    for (var i = 0; i < data.length; i++) {
+      object = data[i]
+      console.log(object)
 
-  const getLspdData = () => {
-    const jsonValue = '[{"dateTime":"2021-03-26T13:30:00Z","value":61.01},{"dateTime":"2021-03-26T13:33:00Z","value":60.67},{"dateTime":"2021-03-26T13:34:00Z","value":60.5},{"dateTime":"2021-03-26T13:35:00Z","value":60.84},{"dateTime":"2021-03-26T13:36:00Z","value":60.76},{"dateTime":"2021-03-26T13:37:00Z","value":60.92},{"dateTime":"2021-03-26T13:38:00Z","value":60.93},{"dateTime":"2021-03-26T13:39:00Z","value":61.1},{"dateTime":"2021-03-26T13:40:00Z","value":61.27}]'
-    const jsonVolume = '[{"dateTime":"2021-03-26T13:30:00Z","value":2056},{"dateTime":"2021-03-26T13:33:00Z","value":400},{"dateTime":"2021-03-26T13:34:00Z","value":264},{"dateTime":"2021-03-26T13:35:00Z","value":3800},{"dateTime":"2021-03-26T13:36:00Z","value":3248},{"dateTime":"2021-03-26T13:37:00Z","value":2800},{"dateTime":"2021-03-26T13:38:00Z","value":1900},{"dateTime":"2021-03-26T13:39:00Z","value":500},{"dateTime":"2021-03-26T13:40:00Z","value":200}]'
-    const parsedValue = JSON.parse(jsonValue);
-    const parsedVolume = JSON.parse(jsonVolume);
-    const lspdData = [];
-   
-    for (var i = 0; i < parsedValue.length; i++) {
-      for (var j = 0; j < parsedVolume.length; j++) {
-        if (parsedValue[i].dateTime === parsedVolume[j].dateTime) {
-          lspdData.push({stock_id: 1, date: parsedValue[i].dateTime.slice(0, 10), time: parsedValue[i].dateTime.slice(11, 19), price: parsedValue[i].value, volume: parsedVolume[j].value})         
-        } 
-      } 
+      fetch("stocks_values/save", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+      },
+        object: JSON.stringify(object)
+      })
+      .then((response) => response.json())
+      .then((data) => console.log(data));         
     }
-    console.log("LSPD", lspdData)
-  };
+  }
 
   return (
     <StocksValuesStyle>
       <Header />
       <h1>Stock Data</h1>
       <div>
-        {/*<button onClick={() => {getSclData(), getAcbData(), getFgltData(), getLspdData()}}>Get more recent data!</button>
-        stockPrice && <div>{stockPrice}</div>}
-        Doing this ^ (with the brackets and &&) means that the div for the stockPrice only appears when there's a value for it. 
-        Otherwise, without this, you just have an empty div on your page. Which isn't terrible, but isn't desirable. */}
-        <form>
-          <select>
+        {/*<button onClick={() => {getSclData(), getAcbData(), getFgltData(), getLspdData()}}>Get more recent data!</button>*/}
+        <div>
+          <select onChange = {handleChangeStockId}>
             <option>Select your stock</option>
             { stocks.map(stocks => (
                 /*<select key={stocks.id}>*/
-                  <option key={stocks.id} value={stocks.id}>{stocks.name}</option>
+                  <option key={stocks.id} value={stocks.id} name="stock_id">{stocks.name}</option>
                 /*</select>*/  
             )) }
           </select>
           <label>Price</label>
           <textarea
-            name="price"
+            name = "price"
             required
-            rows= "15"
-            cols= "50"
+            rows = "15"
+            cols = "50"
+            onChange = {handleChangePrice}
           />
           <label>Volume</label>
           <textarea
-            name="volume"
+            name = "volume"
             required
-            rows= "15"
-            cols= "50"
+            rows = "15"
+            cols = "50"
+            onChange = {handleChangeVolume}
           />
-          <button>Add data!</button>
-        </form>
+          <button onClick={handleClick}>Add data!</button>
+        </div>
       </div>
     </StocksValuesStyle>
   );
