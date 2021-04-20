@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-/*import PageWrapper from './common/PageWrapper';*/
-import Header from './common/Header';
+import PageWrapper from './common/PageWrapper';
 
 const StocksValuesStyle = styled.div`
 form {
@@ -81,7 +80,7 @@ function StocksValues() {
   const [stocks, setStocks] = useState([]);
   const [price, setPrice] = useState([]);
   const [volume, setVolume] = useState([]);
-  const [stockId, setStockId] = useState('');
+  const [stock_id, setStockId] = useState('');
 
   useEffect(() => {
     fetch('stocks/index')
@@ -101,15 +100,6 @@ function StocksValues() {
   const handleChangeVolume = (event) => {
     setVolume(event.target.value);
   }
-
-  const handleChangeDate = (event) => {
-    setDate(event.target.value);
-  }
-
-  const handleChangeTime = (event) => {
-    setTime(event.target.value);
-  }
-
 
   /*const handleClick = () => {
     fetch("stocks_values/scrape", {
@@ -177,7 +167,7 @@ function StocksValues() {
         const date = parsedPrice[i].dateTime.slice(0, 10);
         const time = parsedPrice[i].dateTime.slice(11, 19);
         if (parsedPrice[i].dateTime === parsedVolume[j].dateTime) {
-          data.push({stockId, date, time, price, volume})         
+          data.push({stock_id, date, time, price, volume})         
         } 
       } 
     }
@@ -191,7 +181,7 @@ function StocksValues() {
         headers: {
           "Content-Type": "application/json"
       },
-        object: JSON.stringify(object)
+        body: JSON.stringify(object)
       })
       .then((response) => response.json())
       .then((data) => console.log(data));         
@@ -199,40 +189,41 @@ function StocksValues() {
   }
 
   return (
-    <StocksValuesStyle>
-      <Header />
-      <h1>Stock Data</h1>
-      <div>
-        {/*<button onClick={() => {getSclData(), getAcbData(), getFgltData(), getLspdData()}}>Get more recent data!</button>*/}
+    <PageWrapper>    
+      <StocksValuesStyle>
+        <h1>Stock Data</h1>
         <div>
-          <select onChange = {handleChangeStockId}>
-            <option>Select your stock</option>
-            { stocks.map(stocks => (
-                /*<select key={stocks.id}>*/
-                  <option key={stocks.id} value={stocks.id} name="stock_id">{stocks.name}</option>
-                /*</select>*/  
-            )) }
-          </select>
-          <label>Price</label>
-          <textarea
-            name = "price"
-            required
-            rows = "15"
-            cols = "50"
-            onChange = {handleChangePrice}
-          />
-          <label>Volume</label>
-          <textarea
-            name = "volume"
-            required
-            rows = "15"
-            cols = "50"
-            onChange = {handleChangeVolume}
-          />
-          <button onClick={handleClick}>Add data!</button>
+          {/*<button onClick={() => {getSclData(), getAcbData(), getFgltData(), getLspdData()}}>Get more recent data!</button>*/}
+          <form>
+            <select onChange = {handleChangeStockId}>
+              <option>Select your stock</option>
+              { stocks.map(stocks => (
+                  /*<select key={stocks.id}>*/
+                    <option key={stocks.id} value={stocks.id} name="stock_id">{stocks.name}</option>
+                  /*</select>*/  
+              )) }
+            </select>
+            <label>Price</label>
+            <textarea
+              name = "price"
+              required
+              rows = "15"
+              cols = "50"
+              onChange = {handleChangePrice}
+            />
+            <label>Volume</label>
+            <textarea
+              name = "volume"
+              required
+              rows = "15"
+              cols = "50"
+              onChange = {handleChangeVolume}
+            />
+            <button onClick={handleClick}>Add data!</button>
+          </form>
         </div>
-      </div>
-    </StocksValuesStyle>
+      </StocksValuesStyle>
+    </PageWrapper>
   );
 }
 export default StocksValues;

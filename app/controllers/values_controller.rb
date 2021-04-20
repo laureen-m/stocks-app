@@ -1,12 +1,26 @@
+require 'pry'
+
 class ValuesController < ApplicationController
   def index
   end
 
   def create
-    byebug
+    # binding.pry
+    value = Value.create!(value_params)
+    if value
+      render json: value
+    else
+      render json: value.errors
+    end
   end
 
   def show
+  end
+
+  private
+
+  def value_params
+    params.require(:value).permit(:stock_id, :date, :time, :price, :volume)
   end
 
   #  def scrape
