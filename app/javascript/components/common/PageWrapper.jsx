@@ -5,11 +5,11 @@ import Header from './Header'
 
 function PageWrapper({ children }) {
   return (
-    <PageWrapper>
+    <div>
       <Header />
       {children}
       {/*<Footer />*/}
-    </PageWrapper>
+    </div>
   )
 }
 
