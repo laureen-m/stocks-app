@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { IoMdCheckmarkCircleOutline } from 'react-icons/io'; 
+import { BiErrorCircle } from 'react-icons/bi'; 
 import PageWrapper from './common/PageWrapper';
 
 const StocksValuesStyle = styled.div`
 form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 select {
@@ -28,9 +29,7 @@ select {
   background-repeat: no-repeat;
   background-color: white;
   padding: 5px 60px 5px 15px;
-  margin: 0;    
-  /*-webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;*/
+  margin: 15px;    
   box-sizing: border-box;
   -webkit-appearance: none;
   -moz-appearance: none;  
@@ -65,6 +64,7 @@ button, textarea {
 }
 button {
   padding: 5px 20px 5px 20px;
+  cursor: pointer;
 }
 textarea {
   width: 400px;
@@ -74,6 +74,35 @@ textarea {
 button, textarea:focus {
     outline: 0;
 }
+label {
+  width: 150px;
+}
+.section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.validation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.success {
+  display: flex;
+  flex-direction: row;
+  background: rgb(237, 247, 237);
+  color: rgb(30, 70, 32);
+  padding: 10px;
+  border-radius: 5px;
+}
+.error {
+  display: flex;
+  flex-direction: row;
+  background: rgb(97, 26, 21);
+  color: rgb(253, 236, 234);
+  padding: 10px;
+  border-radius: 5px;
+}
 `
 
 function StocksValues() {
@@ -81,6 +110,8 @@ function StocksValues() {
   const [price, setPrice] = useState([]);
   const [volume, setVolume] = useState([]);
   const [stock_id, setStockId] = useState('');
+  const [message, setMessage] = useState('');
+  const [hasSucceeded, setHasSucceeded] = useState('');
 
   useEffect(() => {
     fetch('stocks/index')
@@ -135,56 +166,45 @@ function StocksValues() {
       .then((response) => response.json())
       .then((data) => console.log(data));
     // With these changes, you can see your result in the console!
-  };
-
-  const getSclData = () => {
-    const jsonValue = '[{"dateTime":"2021-03-26T13:30:00Z","value":61.01},{"dateTime":"2021-03-26T13:33:00Z","value":60.67},{"dateTime":"2021-03-26T13:34:00Z","value":60.5},{"dateTime":"2021-03-26T13:35:00Z","value":60.84},{"dateTime":"2021-03-26T13:36:00Z","value":60.76},{"dateTime":"2021-03-26T13:37:00Z","value":60.92},{"dateTime":"2021-03-26T13:38:00Z","value":60.93},{"dateTime":"2021-03-26T13:39:00Z","value":61.1},{"dateTime":"2021-03-26T13:40:00Z","value":61.27}]'
-    const jsonVolume = '[{"dateTime":"2021-03-26T13:30:00Z","value":61.01},{"dateTime":"2021-03-26T13:33:00Z","value":60.67},{"dateTime":"2021-03-26T13:34:00Z","value":60.5},{"dateTime":"2021-03-26T13:35:00Z","value":60.84},{"dateTime":"2021-03-26T13:36:00Z","value":60.76},{"dateTime":"2021-03-26T13:37:00Z","value":60.92},{"dateTime":"2021-03-26T13:38:00Z","value":60.93},{"dateTime":"2021-03-26T13:39:00Z","value":61.1},{"dateTime":"2021-03-26T13:40:00Z","value":61.27}]'
-    const parsedValue = JSON.parse(jsonValue);
-    const parsedVolume = JSON.parse(jsonVolume);
-    const sclData = [];
-   
-    for (var i = 0; i < parsedValue.length; i++) {
-      for (var j = 0; j < parsedVolume.length; j++) {
-        if (parsedValue[i].dateTime === parsedVolume[j].dateTime) {
-          sclData.push({stock_id: 3, date: parsedValue[i].dateTime.slice(0, 10), time: parsedValue[i].dateTime.slice(11, 19), price: parsedValue[i].value, volume: parsedVolume[j].value})         
-        } 
-      } 
-    }
-    console.log("SCL", sclData)
   };*/
 
-  const handleClick = () => {
-    const parsedPrice = JSON.parse(price);
-    const parsedVolume = JSON.parse(volume);
-    const data = [];
-    let object;
-   
-    for (var i = 0; i < parsedPrice.length; i++) {
-      for (var j = 0; j < parsedVolume.length; j++) {
-        const price = parsedPrice[i].value;
-        const volume = parsedVolume[j].value;
-        const date = parsedPrice[i].dateTime.slice(0, 10);
-        const time = parsedPrice[i].dateTime.slice(11, 19);
-        if (parsedPrice[i].dateTime === parsedVolume[j].dateTime) {
-          data.push({stock_id, date, time, price, volume})         
+  const handleClick = (event) => {
+    event.preventDefault();
+    if (stock_id === "" || price.length == 0 || volume.length == 0) {
+      setMessage('Your form is incomplete.');
+      setHasSucceeded("no")
+    } else {
+      const parsedPrice = JSON.parse(price);
+      const parsedVolume = JSON.parse(volume);
+      const data = [];
+      let object;
+
+      for (var i = 0; i < parsedPrice.length; i++) {
+        for (var j = 0; j < parsedVolume.length; j++) {
+          const price = parsedPrice[i].value;
+          const volume = parsedVolume[j].value;
+          const date = parsedPrice[i].dateTime.slice(0, 10);
+          const time = parsedPrice[i].dateTime.slice(11, 19);
+          if (parsedPrice[i].dateTime === parsedVolume[j].dateTime) {
+            data.push({stock_id, date, time, price, volume})         
+          } 
         } 
-      } 
-    }
+      }
 
-    for (var i = 0; i < data.length; i++) {
-      object = data[i]
-      console.log(object)
+      for (var i = 0; i < data.length; i++) {
+        object = data[i]
 
-      fetch("values/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-      },
-        body: JSON.stringify(object)
-      })
-      .then((response) => response.json())
-      .then((data) => console.log(data));         
+        fetch("values/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+        },
+          body: JSON.stringify(object)
+        })
+        .then((response) => response.json())
+        .then(data => {data ? [ setMessage("Data successfully saved!"), setHasSucceeded("yes") ] : setMessage("There was an error saving your data.")})
+        .catch(() => console.log)         
+      }
     }
   }
 
@@ -193,34 +213,52 @@ function StocksValues() {
       <StocksValuesStyle>
         <h1>Stock Data</h1>
         <div>
-          {/*<button onClick={() => {getSclData(), getAcbData(), getFgltData(), getLspdData()}}>Get more recent data!</button>*/}
-          <form>
-            <select onChange = {handleChangeStockId}>
-              <option>Select your stock</option>
-              { stocks.map(stocks => (
-                  /*<select key={stocks.id}>*/
-                    <option key={stocks.id} value={stocks.id} name="stock_id">{stocks.name}</option>
-                  /*</select>*/  
-              )) }
-            </select>
-            <label>Price</label>
-            <textarea
-              name = "price"
-              required
-              rows = "15"
-              cols = "50"
-              onChange = {handleChangePrice}
-            />
-            <label>Volume</label>
-            <textarea
-              name = "volume"
-              required
-              rows = "15"
-              cols = "50"
-              onChange = {handleChangeVolume}
-            />
-            <button onClick={handleClick}>Add data!</button>
-          </form>
+          <div>
+            <div className="section">
+              <label>Stock name</label>
+              <select onChange = {handleChangeStockId}>
+                <option>Select your stock</option>
+                { stocks.map(stocks => (
+                    /*<select key={stocks.id}>*/
+                      <option key={stocks.id} value={stocks.id} name="stock_id" required>{stocks.name}</option>
+                    /*</select>*/  
+                )) }
+              </select>
+            </div>
+            <div className="section">
+              <label>Price</label>
+              <textarea
+                name = "price"
+                rows = "15"
+                cols = "50"
+                onChange = {handleChangePrice}
+              />
+            </div>
+            <div className="section">
+              <label>Volume</label>
+              <textarea
+                name = "volume"
+                rows = "15"
+                cols = "50"
+                onChange = {handleChangeVolume}
+              />
+            </div>
+            <div className="validation">
+              <button onClick={handleClick}>Add data!</button>
+              { hasSucceeded === "yes" 
+                ? <div className= "success">
+                    <div><IoMdCheckmarkCircleOutline /></div>
+                    <div>{message}</div>
+                  </div>
+                : hasSucceeded === "no" ? 
+                  <div className= "error">
+                    <div><BiErrorCircle /></div>
+                    <div>{message}</div>
+                  </div>
+                : <p></p>
+              }
+            </div>
+          </div>  
         </div>
       </StocksValuesStyle>
     </PageWrapper>
