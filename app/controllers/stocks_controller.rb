@@ -15,11 +15,6 @@ class StocksController < ApplicationController
   def show
     render json: { name: stock.name, values: stock.values }
   end
-
-  # def display
-  #  stock_name = Stock.find(params[:id])
-  #  render json: stock_name
-  # end
   
   private
 
