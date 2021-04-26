@@ -171,7 +171,10 @@ function StocksValues() {
   const handleClick = (event) => {
     event.preventDefault();
     if (stock_id === "" || price.length == 0 || volume.length == 0) {
-      setMessage('Your form is incomplete.');
+      setMessage('Empty fields.');
+      setHasSucceeded("no");
+    } else if (!price.includes("[") || !price.includes("]") || !volume.includes("[") || !volume.includes("]")) {
+      setMessage("The data entered should be in an array.");
       setHasSucceeded("no")
     } else {
       const parsedPrice = JSON.parse(price);
@@ -203,7 +206,7 @@ function StocksValues() {
         })
         .then((response) => response.json())
         .then(data => {data ? [ setMessage("Data successfully saved!"), setHasSucceeded("yes") ] : setMessage("There was an error saving your data.")})
-        .catch(() => console.log)         
+        .catch(console.log)         
       }
     }
   }
@@ -247,12 +250,12 @@ function StocksValues() {
               <button onClick={handleClick}>Add data!</button>
               { hasSucceeded === "yes" 
                 ? <div className= "success">
-                    <div><IoMdCheckmarkCircleOutline /></div>
+                    <div className = "pr1"><IoMdCheckmarkCircleOutline /></div>
                     <div>{message}</div>
                   </div>
                 : hasSucceeded === "no" ? 
                   <div className= "error">
-                    <div><BiErrorCircle /></div>
+                    <div className = "pr1"><BiErrorCircle /></div>
                     <div>{message}</div>
                   </div>
                 : <p></p>
