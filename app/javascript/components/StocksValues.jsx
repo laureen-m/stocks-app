@@ -187,10 +187,15 @@ function StocksValues() {
           const price = parsedPrice[i].value;
           const volume = parsedVolume[j].value;
           const date = parsedPrice[i].dateTime.slice(0, 10);
-          const time = parsedPrice[i].dateTime.slice(11, 19);
+          const initialTime = parsedPrice[i].dateTime.slice(11, 19);
+          const initialMinute = parsedPrice[i].dateTime.slice(13, 19);
+          const initialHour = parseInt(initialTime);
+          const rightHour = (initialHour - 4).toString();
+          const time = rightHour + initialMinute;
           if (parsedPrice[i].dateTime === parsedVolume[j].dateTime) {
-            data.push({stock_id, date, time, price, volume})         
+            data.push({stock_id, date, time, price, volume});
           } 
+          
         } 
       }
 
@@ -216,7 +221,7 @@ function StocksValues() {
       <StocksValuesStyle>
         <h1>Stock Data</h1>
         <div>
-          <div>
+          <form>
             <div className="section">
               <label>Stock name</label>
               <select onChange = {handleChangeStockId}>
@@ -261,7 +266,7 @@ function StocksValues() {
                 : <p></p>
               }
             </div>
-          </div>  
+          </form>  
         </div>
       </StocksValuesStyle>
     </PageWrapper>
