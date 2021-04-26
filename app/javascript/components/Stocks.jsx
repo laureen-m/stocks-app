@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from "styled-components";
-/*import PageWrapper from './common/PageWrapper';*/
-import Header from './common/Header';
+import PageWrapper from './common/PageWrapper';
 
 const StocksPageStyle = styled.div`
 select {
@@ -82,21 +81,22 @@ function Stocks() {
   };
 
   return (
-    <StocksPageStyle>
-      <Header />
-      <h1>List of stocks</h1>
-      <div className="flex flex-row justify-center items-center">
-        <select onChange={handleChange}>
-          <option>Select your stock</option>
-          { stocks.map(stocks => (
-              /*<select key={stocks.id}>*/
-                <option key={stocks.id} value={stocks.id}>{stocks.name}</option>
-              /*</select>*/  
-          )) }
-        </select>
-        <button onClick={handleClick}>Analyze</button>
-      </div>
-    </StocksPageStyle>
+    <PageWrapper>
+      <StocksPageStyle>
+        <h1>List of stocks</h1>
+        <div className="flex flex-row justify-center items-center">
+          <select onChange={handleChange}>
+            <option>Select your stock</option>
+            { stocks.map(stocks => (
+                /*<select key={stocks.id}>*/
+                  <option key={stocks.id} value={stocks.id}>{stocks.name}</option>
+                /*</select>*/  
+            )) }
+          </select>
+          <button onClick={handleClick}>Analyze</button>
+        </div>
+      </StocksPageStyle>
+    </PageWrapper>
   );
 }
 export default Stocks;

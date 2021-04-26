@@ -1,0 +1,5 @@
+class ChangeTimeColumnToStringInValuesTable < ActiveRecord::Migration[6.1]
+  def change
+    change_column :values, :time, :string
+  end
+end

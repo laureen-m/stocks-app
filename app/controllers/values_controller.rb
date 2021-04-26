@@ -1,10 +1,29 @@
 require 'pry'
 
-class StocksDataController < ApplicationController
+class ValuesController < ApplicationController
   def index
   end
 
-  def scrape
+  def create
+    # binding.pry
+    value = Value.create!(value_params)
+    if value
+      render json: value
+    else
+      render json: value.errors
+    end
+  end
+
+  def show
+  end
+
+  private
+
+  def value_params
+    params.require(:value).permit(:stock_id, :date, :time, :price, :volume)
+  end
+
+  #  def scrape
     # binding.pry
     # Putting a binding.pry here helps you to see in the terminal what the response of this method is.
     # scrape returns:
@@ -18,7 +37,7 @@ class StocksDataController < ApplicationController
     #   :visits=>{:requests=>1, :responses=>1},
     #   :items=>{:sent=>0, :processed=>0},
     #   :events=>{:requests_errors=>{}, :drop_items_errors=>{}, :custom=>{}}}
-    scraped_data = StockData.crawl! #(:parse, url: "https://www.bloomberg.com/markets2/api/intraday/FLGT%3AUS?days=1&interval=1&volumeInterval=1")
-    render json: scraped_data
-  end
+    # scraped_data = StockData.crawl! #(:parse, url: "https://www.bloomberg.com/markets2/api/intraday/FLGT%3AUS?days=1&interval=1&volumeInterval=1")
+    # render json: scraped_data
+  # end
 end

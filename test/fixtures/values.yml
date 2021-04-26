@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stock_id: 1
+  date: 2021-04-19
+  time: 2021-04-19 15:06:20
+  price: 1
+  volume: 1
+
+two:
+  stock_id: 1
+  date: 2021-04-19
+  time: 2021-04-19 15:06:20
+  price: 1
+  volume: 1

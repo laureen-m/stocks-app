@@ -4,7 +4,7 @@ import "tachyons";
 import Home from "../components/Home";
 import Stocks from "../components/Stocks";
 import Stock from "../components/Stock";
-import StockData from "../components/StockData";
+import StocksValues from "../components/StocksValues";
 
 export default (
   <Router>
@@ -12,7 +12,7 @@ export default (
       <Route path="/" exact component={Home} />
       <Route path="/stocks" exact component={Stocks} />
       <Route path="/stocks/:id" exact component={Stock} />
-      <Route path="/stockdata" exact component={StockData} />
+      <Route path="/stocksvalues" exact component={StocksValues} />
     </Switch>
   </Router>
 );
