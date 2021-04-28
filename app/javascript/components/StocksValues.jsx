@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { IoMdCheckmarkCircleOutline } from 'react-icons/io'; 
+import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
+import { RiCloseFill } from 'react-icons/ri';
 import { BiErrorCircle } from 'react-icons/bi'; 
 import PageWrapper from './common/PageWrapper';
 
@@ -90,18 +91,23 @@ label {
 .success {
   display: flex;
   flex-direction: row;
+  align-items: center;
   background: rgb(237, 247, 237);
   color: rgb(30, 70, 32);
-  padding: 10px;
+  padding: 0px 0px 10px 10px;
   border-radius: 5px;
 }
 .error {
   display: flex;
   flex-direction: row;
+  align-items: center;
   background: rgb(97, 26, 21);
   color: rgb(253, 236, 234);
-  padding: 10px;
+  padding: 0px 0px 10px 10px;
   border-radius: 5px;
+}
+.close {
+  padding-top: 10px;
 }
 `
 
@@ -168,7 +174,7 @@ function StocksValues() {
     // With these changes, you can see your result in the console!
   };*/
 
-  const handleClick = (event) => {
+  const handleClickSave = (event) => {
     event.preventDefault();
     if (stock_id === "" || price.length == 0 || volume.length == 0) {
       setMessage('Empty fields.');
@@ -194,10 +200,10 @@ function StocksValues() {
           const time = rightHour + initialMinute;
           if (parsedPrice[i].dateTime === parsedVolume[j].dateTime) {
             data.push({stock_id, date, time, price, volume});
-          } 
-          
+          }  
         } 
-      }
+      };
+      console.log(data);
 
       for (var i = 0; i < data.length; i++) {
         object = data[i]
@@ -210,11 +216,23 @@ function StocksValues() {
           body: JSON.stringify(object)
         })
         .then((response) => response.json())
-        .then(data => {data ? [ setMessage("Data successfully saved!"), setHasSucceeded("yes") ] : setMessage("There was an error saving your data.")})
+        .then(data => {data ? [ setMessage("Data successfully saved!"), setHasSucceeded("yes") ] : [ setMessage("There was an error saving your data."), setHasSucceeded("no") ]})
         .catch(console.log)         
       }
+      setPrice([]);
+      setVolume([]);
     }
   }
+
+  const handleClickClose = () => {
+    setHasSucceeded("")
+  }
+
+  /*const handleSubmit = () => {
+    setStocks([]);
+    setPrice([]);
+    setVolume([]);
+  }*/
 
   return (
     <PageWrapper>    
@@ -236,32 +254,36 @@ function StocksValues() {
             <div className="section">
               <label>Price</label>
               <textarea
-                name = "price"
-                rows = "15"
-                cols = "50"
-                onChange = {handleChangePrice}
+                name="price"
+                rows="15"
+                cols="50"
+                onChange={handleChangePrice}
+                value={price}
               />
             </div>
             <div className="section">
               <label>Volume</label>
               <textarea
-                name = "volume"
-                rows = "15"
-                cols = "50"
-                onChange = {handleChangeVolume}
+                name="volume"
+                rows="15"
+                cols="50"
+                onChange={handleChangeVolume}
+                value={volume}
               />
             </div>
             <div className="validation">
-              <button onClick={handleClick}>Add data!</button>
+              <button onClick={handleClickSave} type="submit">Add data!</button>
               { hasSucceeded === "yes" 
-                ? <div className= "success">
-                    <div className = "pr1"><IoMdCheckmarkCircleOutline /></div>
-                    <div>{message}</div>
+                ? <div className="success">
+                    <div className="pr1 close"><IoMdCheckmarkCircleOutline /></div>
+                    <div className="close">{message}</div>
+                    <div className="pl4 pr0 pointer" onClick={handleClickClose}><RiCloseFill /></div>
                   </div>
-                : hasSucceeded === "no" ? 
-                  <div className= "error">
-                    <div className = "pr1"><BiErrorCircle /></div>
-                    <div>{message}</div>
+                : hasSucceeded === "no" ?
+                  <div className="error">
+                    <div className="pr1 close"><BiErrorCircle /></div>
+                    <div className="close">{message}</div>
+                    <div className="pl4 pr0 pointer" onClick={handleClickClose}><RiCloseFill /></div>
                   </div>
                 : <p></p>
               }
