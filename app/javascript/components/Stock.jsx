@@ -42,7 +42,7 @@ function Stock() {
     series: [{
         name: 'Stock',
         type: 'area',
-        data: [0],
+        data: [0],     // data updated when useEffect is called with the actual values of my DB
         gapSize: 5,
         tooltip: {
           valueDecimals: 2,
@@ -82,10 +82,10 @@ function Stock() {
     fetch(`/show/${id}`)
       .then((response) => response.json())
       .then((data) => [setValues(data.values), setChartOptions({ ...chartOptions, series: [{
-        data: data.values.map(values => ([values.datetime, values.price]))
+        data: data.values.map(values => ([values.datetime, values.price]))                        // Array of arrays, containing x and y values 
       }]})])
       .catch(console.log)
-    /*fetch(`/show/${id}`)
+    fetch(`/show/${id}`)
       .then((response) => response.json())
       .then((data) => [setStock(data.name), setChartOptions({ ...chartOptions, 
         title: {
@@ -95,7 +95,7 @@ function Stock() {
           name: data.name
         }]})
       ])
-      .catch(console.log)*/
+      .catch(console.log)
     }, []);
 
   const handleClick = () => {
