@@ -9,13 +9,18 @@ function Stock() {
   const [stock, setStock] = useState([]);
   const { id } = useParams();
   const [hoverData, setHoverData] = useState(null);
-  const stockName = stock;
   const [chartOptions, setChartOptions] = useState({
     title: {
-      text: `${stockName} Stock price by minute`
+      text: `Stock price by minute`
   },
     xAxis: {
-      gapGridLineWidth: 0,
+      type: "datetime",
+      tickInterval: 24 * 3600 * 1000,
+      /*labels: {
+        formatter: function() {
+          return Highcharts.dateFormat('%Y %M %d', this.value);
+        }
+      }*/
     },
     rangeSelector: {
       buttons: [{
@@ -32,17 +37,19 @@ function Stock() {
           text: 'All'
       }],
       selected: 1,
-      inputEnabled: false
+      inputEnabled: true
     },
-    series: [
-      {
-        name: `${stockName} Name`,
+    series: [{
+        name: 'Stock',
         type: 'area',
-        data: [1,2,3],
+        data: [0],
         gapSize: 5,
         tooltip: {
-            valueDecimals: 2
+          valueDecimals: 2,
+          xDateFormat: '%A, %b %e, %H:%M',
+          dateTimeLabelFormats: '%A, %b %e, %H:%M',
         },
+        pointStart: Date.UTC(2021, 2, 19),
         fillColor: {
             linearGradient: {
                 x1: 0,
@@ -74,168 +81,42 @@ function Stock() {
   useEffect(() => {
     fetch(`/show/${id}`)
       .then((response) => response.json())
-      .then((data) => setValues(data.values))
+      .then((data) => [setValues(data.values), setChartOptions({ ...chartOptions, series: [{
+        data: data.values.map(values => ([values.datetime, values.price]))
+      }]})])
       .catch(console.log)
-    fetch(`/show/${id}`)
+    /*fetch(`/show/${id}`)
       .then((response) => response.json())
-      .then((data) => setStock(data.name))
-      .catch(console.log)
-
-    /*fetch("https://canvasjs.com/data/docs/ltcusd2018.json")
-    .then(res => res.json())
-    .then((data) => {
-        price = [], volume = [];
-        for (var i = 0; i < data.length; i++) {
-          price.push([
-            data[i].date,
-            data[i].price
-          ]);
-
-          volume.push([
-            data[i].date,
-            data[i].volume
-          ])
-        }
-    });*/
-  }, []);
-
-  /*const options = {
-    title: {
-      text: `${stock} stock chart`
-    },
-    series: [{
-      type: 'price',
-      id: 'aapl-ohlc',
-      name: `${stock} Stock Price`,
-      data: price
-    }, {
-      type: 'column',
-      id: 'aapl-volume',
-      name: `${stock} Volume`,
-      data: volume,
-      yAxis: 1
-    }],
-  }*/
-
-  /*const updateSeries = () => {
-    setChartOptions({ 
-      series: [
-          { data: [Math.random() * 5, 2, 1]}
-        ]
-    });
-  }*/
+      .then((data) => [setStock(data.name), setChartOptions({ ...chartOptions, 
+        title: {
+          text: `${data.name} price by minute`
+        },
+        series: [{
+          name: data.name
+        }]})
+      ])
+      .catch(console.log)*/
+    }, []);
 
   const handleClick = () => {
+    console.log(chartOptions.series[0].data);
     console.log(values)
   }
-
-  
-  /*const MyStockChart = () => <HighchartsReact
-    highcharts={Highcharts}
-    constructorType={'stockChart'}
-    options={chartOptions}
-  />*/
 
   return (
     <PageWrapper>
       <h1>{stock}</h1>
       <div className='pa3'>
-        <select onClick={handleClick}>
-          <option>Date</option>
-          { values.map(values => (
-            <option key={values.id} value={values.id}>{values.date}</option>
-            )) }
-        </select>
+        <button onClick={handleClick}>Action</button>
         <br />
         <p></p>
-          <HighchartsReact
-            highcharts={Highcharts}
-            constructorType={'stockChart'}
-            options={chartOptions}
+        <HighchartsReact
+          highcharts={Highcharts}
+          constructorType={'stockChart'}
+          options={chartOptions}
         /> 
       </div>
     </PageWrapper>
   );
 }
-
 export default Stock;
-
-/*
-----------
-
-
-    Highcharts.stockChart('container', {
-        yAxis: [{
-            labels: {
-                align: 'left'
-            },
-            height: '80%',
-            resize: {
-                enabled: true
-            }
-        }, {
-            labels: {
-                align: 'left'
-            },
-            top: '80%',
-            height: '20%',
-            offset: 0
-        }],
-        tooltip: {
-            shape: 'square',
-            headerShape: 'callout',
-            borderWidth: 0,
-            shadow: false,
-            positioner: function (width, height, point) {
-                var chart = this.chart,
-                    position;
-
-                if (point.isHeader) {
-                    position = {
-                        x: Math.max(
-                            // Left side limit
-                            chart.plotLeft,
-                            Math.min(
-                                point.plotX + chart.plotLeft - width / 2,
-                                // Right side limit
-                                chart.chartWidth - width - chart.marginRight
-                            )
-                        ),
-                        y: point.plotY
-                    };
-                } else {
-                    position = {
-                        x: point.series.chart.plotLeft,
-                        y: point.series.yAxis.top - chart.plotTop
-                    };
-                }
-
-                return position;
-            }
-        },
-        series: [{
-            type: 'ohlc',
-            id: 'aapl-ohlc',
-            name: 'AAPL Stock Price',
-            data: ohlc
-        }, {
-            type: 'column',
-            id: 'aapl-volume',
-            name: 'AAPL Volume',
-            data: volume,
-            yAxis: 1
-        }],
-        responsive: {
-            rules: [{
-                condition: {
-                    maxWidth: 800
-                },
-                chartOptions: {
-                    rangeSelector: {
-                        inputEnabled: false
-                    }
-                }
-            }]
-        }
-    });
-});*/
