@@ -198,8 +198,9 @@ function StocksValues() {
           const initialHour = parseInt(initialTime);
           const rightHour = (initialHour - 4).toString();
           const time = rightHour + initialMinute;
+          const datetime = date + ' ' + time + ":00";
           if (parsedPrice[i].dateTime === parsedVolume[j].dateTime) {
-            data.push({stock_id, date, time, price, volume});
+            data.push({stock_id, date, time, price, volume, datetime});
           }  
         } 
       };
