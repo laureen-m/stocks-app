@@ -200,11 +200,10 @@ function StocksValues() {
           const time = rightHour + initialMinute;
           const datetime = date + ' ' + time + ":00";
           if (parsedPrice[i].dateTime === parsedVolume[j].dateTime) {
-            data.push({stock_id, date, time, price, volume, datetime});
+            data.push({stock_id, price, volume, datetime});
           }  
         } 
       };
-
       for (var i = 0; i < data.length; i++) {
         object = data[i]
 
@@ -228,11 +227,11 @@ function StocksValues() {
     setHasSucceeded("")
   }
 
-  /*const handleSubmit = () => {
-    setStocks([]);
+  const handleSubmit = () => {
+    //setStocks([]);
     setPrice([]);
     setVolume([]);
-  }*/
+  }
 
   return (
     <PageWrapper>    
