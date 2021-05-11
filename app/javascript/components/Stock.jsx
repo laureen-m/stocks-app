@@ -14,13 +14,7 @@ function Stock() {
       text: `Stock price by minute`,
     },
     xAxis: {
-      type: "datetime",
-      tickInterval: 24 * 3600 * 1000,
-      /*labels: {
-        formatter: function() {
-          return Highcharts.dateFormat('%Y %M %d', this.value);
-        }
-      }*/
+      gapGridLineWidth: 0
     },
     rangeSelector: {
       buttons: [
@@ -43,6 +37,22 @@ function Stock() {
       selected: 1,
       inputEnabled: true,
     },
+    tooltip: {
+      valueDecimals: 2,
+      formatter: function() {
+        //const name = this.series.name;
+        const price = this.y;
+        const primitiveDate = this.x;
+        const date = new Date(primitiveDate);
+        const formattedDate = date.toDateString();
+        const formattedHour = date.getHours() + 5;
+        const formattedMinute = date.toTimeString().slice(3, 5);
+        const formattedTime = formattedHour + ":" + formattedMinute;
+        return formattedDate + ' ' + formattedTime + '<br/>' + 'Price: ' + price + '</br>';
+      }
+      /*xDateFormat: "%A, %b %e, %H:%M",
+      dateTimeLabelFormats: "%A, %b %e, %H:%M",*/
+    },
     series: [
       {
         name: "Stock",
@@ -51,10 +61,7 @@ function Stock() {
         gapSize: 5,
         tooltip: {
           valueDecimals: 2,
-          xDateFormat: "%A, %b %e, %H:%M",
-          dateTimeLabelFormats: "%A, %b %e, %H:%M",
         },
-        // pointStart: Date.UTC(2021, 8, 19),
         fillColor: {
           linearGradient: {
             x1: 0,
