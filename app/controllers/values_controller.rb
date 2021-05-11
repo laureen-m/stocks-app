@@ -19,9 +19,9 @@ class ValuesController < ApplicationController
 
   private
 
-  def value_params
-    params.require(:value).permit(:stock_id, :date, :time, :price, :volume)
-  end
+    def value_params
+      params.require(:value).permit(:stock_id, :date, :time, :price, :volume, :datetime)
+    end
 
   #  def scrape
     # binding.pry

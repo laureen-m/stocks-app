@@ -13,7 +13,7 @@ class StocksController < ApplicationController
   end
 
   def show
-    render json: stock
+    render json: { name: stock.name, values: stock.values }
   end
   
   private
@@ -21,4 +21,5 @@ class StocksController < ApplicationController
     def stock
       @stock = Stock.find(params[:id])
     end
+
 end
