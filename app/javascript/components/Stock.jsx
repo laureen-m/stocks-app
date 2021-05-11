@@ -37,22 +37,6 @@ function Stock() {
       selected: 1,
       inputEnabled: true,
     },
-    tooltip: {
-      valueDecimals: 2,
-      formatter: function() {
-        //const name = this.series.name;
-        const price = this.y;
-        const primitiveDate = this.x;
-        const date = new Date(primitiveDate);
-        const formattedDate = date.toDateString();
-        const formattedHour = date.getHours() + 5;
-        const formattedMinute = date.toTimeString().slice(3, 5);
-        const formattedTime = formattedHour + ":" + formattedMinute;
-        return formattedDate + ' ' + formattedTime + '<br/>' + 'Price: ' + price + '</br>';
-      }
-      /*xDateFormat: "%A, %b %e, %H:%M",
-      dateTimeLabelFormats: "%A, %b %e, %H:%M",*/
-    },
     series: [
       {
         name: "Stock",
@@ -116,6 +100,20 @@ function Stock() {
           ...chartOptions,
           title: {
             text: `${data.name} price by minute`,
+          },
+          tooltip: {
+            valueDecimals: 2,
+            formatter: function() {
+              const name = data.name;
+              const price = this.y;
+              const primitiveDate = this.x;
+              const date = new Date(primitiveDate);
+              const formattedDate = date.toDateString();
+              const formattedHour = date.getHours() + 5;
+              const formattedMinute = date.toTimeString().slice(3, 5);
+              const formattedTime = formattedHour + ":" + formattedMinute;
+              return name + '<br/>'  + formattedDate + ' ' + formattedTime + '<br/>' + 'Price: ' + price + '</br>';
+            }
           },
           series: [
             {
