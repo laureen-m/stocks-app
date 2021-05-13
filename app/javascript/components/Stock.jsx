@@ -11,11 +11,24 @@ function Stock() {
   const [hoverData, setHoverData] = useState(null);
   const [chartOptions, setChartOptions] = useState({
     title: {
-      text: `Stock price by minute`,
+      text: `Stock data by minute`,
     },
-    xAxis: {
-      gapGridLineWidth: 0
-    },
+    yAxis: [{
+      labels: {
+          align: 'left'
+      },
+      height: '80%',
+      resize: {
+          enabled: true
+      }
+  }, {
+      labels: {
+          align: 'left'
+      },
+      top: '80%',
+      height: '20%',
+      offset: 0
+  }],
     rangeSelector: {
       buttons: [
         {
@@ -39,43 +52,25 @@ function Stock() {
     },
     series: [
       {
-        name: "Stock",
+        name: "Price",
         type: "area",
         data: [0], // data updated when useEffect is called with the actual values of my DB
-        gapSize: 5,
-        tooltip: {
-          valueDecimals: 2,
-        },
-        fillColor: {
-          linearGradient: {
-            x1: 0,
-            y1: 0,
-            x2: 0,
-            y2: 1,
-          },
-          stops: [
-            [0, Highcharts.getOptions().colors[0]],
-            [
-              1,
-              Highcharts.color(Highcharts.getOptions().colors[0])
-                .setOpacity(0)
-                .get("rgba"),
-            ],
-          ],
-        },
+        gapSize: 2,
+        threshold: null,
+      },
+      {
+        name: "Volume",
+        type: "column",
+        data: [0], // data updated when useEffect is called with the actual values of my DB
+        gapSize: 2,
+        yAxis: 1,
         threshold: null,
       },
     ],
     plotOptions: {
       series: {
-        point: {
-          events: {
-            mouseOver(e) {
-              setHoverData(e.target.category);
-            },
-          },
-        },
-      },
+          allowPointSelect: true
+      }
     },
   });
 
@@ -95,7 +90,6 @@ function Stock() {
         //   ])
         // ),
         setStock(data.name),
-        console.log(data.values),
         setChartOptions({
           ...chartOptions,
           title: {
@@ -105,19 +99,21 @@ function Stock() {
             valueDecimals: 2,
             formatter: function() {
               const name = data.name;
-              const price = this.y;
               const primitiveDate = this.x;
               const date = new Date(primitiveDate);
               const formattedDate = date.toDateString();
               const formattedHour = date.getHours() + 5;
               const formattedMinute = date.toTimeString().slice(3, 5);
               const formattedTime = formattedHour + ":" + formattedMinute;
-              return name + '<br/>'  + formattedDate + ' ' + formattedTime + '<br/>' + 'Price: ' + price + '</br>';
-            }
+              return this.points.reduce(function (s, point) {
+                return s + '<br/>' + point.series.name + ': ' +
+                    point.y;
+                }, '<b>' + name + '</b>' +'<br/>' + formattedDate + ' ' + formattedTime);
+            },
+            shared: true,
           },
           series: [
             {
-              name: data.name,
               data: data.values
                 .sort(
                   (a, b) =>
@@ -127,7 +123,19 @@ function Stock() {
                 .map((values) => [
                   new Date(values.datetime).valueOf(),
                   values.price,
-                ]), // Array of arrays, containing x and y values
+                ]), 
+            },
+            {
+              data: data.values
+                .sort(
+                  (a, b) =>
+                    parseFloat(a.datetime.split("-")[2]) -
+                    parseFloat(b.datetime.split("-")[2])
+                )
+                .map((values) => [
+                  new Date(values.datetime).valueOf(),
+                  values.volume,
+                ]), 
             },
           ],
         }),
@@ -135,18 +143,10 @@ function Stock() {
       .catch(console.log);
   }, []);
 
-  const handleClick = () => {
-    console.log(chartOptions.series[0].data);
-    console.log(values);
-  };
-
   return (
     <PageWrapper>
       <h1>{stock}</h1>
       <div className="pa3">
-        <button onClick={handleClick}>Action</button>
-        <br />
-        <p></p>
         <HighchartsReact
           highcharts={Highcharts}
           constructorType={"stockChart"}
