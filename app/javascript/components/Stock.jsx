@@ -67,11 +67,11 @@ function Stock() {
         threshold: null,
       },
     ],
-    plotOptions: {
-      series: {
-          allowPointSelect: true
-      }
-    },
+    // plotOptions: {
+    //   series: {
+    //       allowPointSelect: true
+    //   }
+    // },
   });
 
   // const transformValues = (values) => {
@@ -107,7 +107,7 @@ function Stock() {
               const formattedTime = formattedHour + ":" + formattedMinute;
               return this.points.reduce(function (s, point) {
                 return s + '<br/>' + point.series.name + ': ' +
-                    point.y;
+                    point.y.toLocaleString();
                 }, '<b>' + name + '</b>' +'<br/>' + formattedDate + ' ' + formattedTime);
             },
             shared: true,
