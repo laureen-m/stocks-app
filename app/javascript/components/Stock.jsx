@@ -79,7 +79,7 @@ function Stock() {
   // };
 
   useEffect(() => {
-    fetch(`/show/${id}`)
+    fetch(`/api/v1/show/${id}`)
       .then((response) => response.json())
       .then((data) => [
         setValues(data.values),

@@ -120,7 +120,7 @@ function StocksValues() {
   const [hasSucceeded, setHasSucceeded] = useState('');
 
   useEffect(() => {
-    fetch('stocks/index')
+    fetch('/api/v1/stocks/index')
       .then(response => response.json())
       .then(data => setStocks(data))
       .catch(console.log)
@@ -207,7 +207,7 @@ function StocksValues() {
       for (var i = 0; i < data.length; i++) {
         object = data[i]
 
-        fetch("values/create", {
+        fetch("/api/v1/values/create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
