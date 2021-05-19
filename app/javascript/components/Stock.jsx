@@ -37,6 +37,16 @@ function Stock() {
           text: "1D",
         },
         {
+          type: "day",
+          count: 5,
+          text: "5D",
+        },
+        {
+          type: "month",
+          count: 1,
+          text: "1M",
+        },
+        {
           type: "all",
           count: 1,
           text: "All",
@@ -141,7 +151,12 @@ function Stock() {
                 .map((values) => [ // map through stock intraday data and display
                   new Date(values.datetime).valueOf(),
                   values.price,
-                ]), 
+                ]),
+                point: {
+                  events: {
+                    click: handleClick.bind(this),
+                  },
+                }, 
             },
             {
               data: data.values
@@ -156,15 +171,14 @@ function Stock() {
                 ]), 
             },
           ],
-          // plotOptions: {
-          //   series: {
-          //       allowPointSelect: true
-          //   }
-          // },
         }),
       ])
       .catch(console.log);
   }, []);
+
+  const handleClick = (chart) => {
+    console.log(chart.point.options.y);
+  };
 
   return (
     <PageWrapper>
@@ -174,6 +188,7 @@ function Stock() {
           highcharts={Highcharts}
           constructorType={"stockChart"}
           options={chartOptions}
+          handleClick={handleClick}
         />
       </div>
     </PageWrapper>
