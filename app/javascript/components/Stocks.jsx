@@ -66,7 +66,7 @@ function Stocks() {
   let history = useHistory();
 
   useEffect(() => {
-    fetch('stocks/index')
+    fetch('/api/v1/stocks/index')
       .then(response => response.json())
       .then(data => setStocks(data))
       .catch(console.log)

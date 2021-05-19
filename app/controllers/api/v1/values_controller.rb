@@ -1,6 +1,6 @@
 require 'pry'
 
-class ValuesController < ApplicationController
+class Api::V1::ValuesController < ApplicationController
   def index
   end
 
