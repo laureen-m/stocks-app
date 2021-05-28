@@ -7,6 +7,7 @@ import PageWrapper from "./common/PageWrapper";
 function Stock() {
   const [stock, setStock] = useState([]);
   const { id } = useParams(); // allows to fetch data of selected stock per id 
+  const evolution = [];
   const [chartOptions, setChartOptions] = useState({
     yAxis: [{
       labels: {
@@ -112,7 +113,7 @@ function Stock() {
       },
     ],
   });
-
+  
   useEffect(() => {
     fetch(`/api/v1/show/${id}`)
       .then((response) => response.json())
@@ -152,11 +153,6 @@ function Stock() {
                   new Date(values.datetime).valueOf(),
                   values.price,
                 ]),
-                point: {
-                  events: {
-                    click: handleClick.bind(this),
-                  },
-                }, 
             },
             {
               data: data.values
@@ -171,14 +167,49 @@ function Stock() {
                 ]), 
             },
           ],
-        }),
+          plotOptions: {
+            series: {
+              point: {
+                events: {
+                  click: function() {
+                    if (evolution.length < 2) { 
+                      console.log(this);
+                      // this.update({color:'yellow'})
+                      setTimeout(evolution.push(this.options), 1000);
+                      evolution.forEach(function(v){ delete v.color });
+                      evolution.sort((a, b) => (a.x) - (b.x));
+                      if (evolution.length == 2 ) {
+                        // const difference = evolution[0].y;
+                        const difference = (evolution[1].y-evolution[0].y)/evolution[0].y*100;
+                        const pourcentage = +difference.toFixed(2) + '%';
+                        console.log('Evolution:', evolution, 'Poucentage;', pourcentage);
+                      } 
+                    } else {
+                      evolution.length = 0;
+                      // this.update({color:'yellow'})
+                      setTimeout(evolution.push(this.options), 1000);
+                      evolution.forEach(function(v){ delete v.color });
+                    }
+                  }
+                }
+              }, 
+            }
+          }
+        })
       ])
       .catch(console.log);
   }, []);
 
-  const handleClick = (chart) => {
-    console.log(chart.point.options.y);
-  };
+  // TO-DO:
+  // 1. voir pour ne changer que la couleur du point clique et pas tout le tooltip 
+  //// 2. classer par date
+  // 3. Calculer evolution entre les deux valeurs
+  // 4. afficher dans un tooltip
+
+  // const handleClick = (chart) => {
+  //   console.log(chart.point.options.y);
+  //   setSelectedValue(chart.point.options.y);
+  // }; 
 
   return (
     <PageWrapper>
@@ -188,7 +219,7 @@ function Stock() {
           highcharts={Highcharts}
           constructorType={"stockChart"}
           options={chartOptions}
-          handleClick={handleClick}
+          //handleClick={handleClick}
         />
       </div>
     </PageWrapper>
