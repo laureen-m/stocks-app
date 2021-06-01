@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import * as Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import PageWrapper from "./common/PageWrapper";
+import { withTheme } from "styled-components";
 
 function Stock() {
   const [stock, setStock] = useState([]);
@@ -13,7 +14,7 @@ function Stock() {
       labels: {
           align: 'left'
       },
-      height: '80%',
+      height: '100%',
       resize: {
           enabled: true
       }
@@ -121,9 +122,6 @@ function Stock() {
         setStock(data.name), // used to display stock name at the top of the page
         setChartOptions({ // update graph infos
           ...chartOptions,
-          // title: {
-          //   text: `${data.name} price by minute`,
-          // },
           tooltip: {
             valueDecimals: 2,
             formatter: function() {
@@ -172,27 +170,38 @@ function Stock() {
               point: {
                 events: {
                   click: function() {
-                    if (evolution.length < 2) { 
-                      console.log(this);
-                      // this.update({color:'yellow'})
-                      setTimeout(evolution.push(this.options), 1000);
-                      evolution.forEach(function(v){ delete v.color });
+                     if (evolution.length < 2) { 
+                      // this.update({color:'yellow'});
+                      setTimeout(evolution.push({["x"]: this.x, ["y"]:this.y}), 100);
                       evolution.sort((a, b) => (a.x) - (b.x));
                       if (evolution.length == 2 ) {
-                        // const difference = evolution[0].y;
                         const difference = (evolution[1].y-evolution[0].y)/evolution[0].y*100;
-                        const pourcentage = +difference.toFixed(2) + '%';
-                        console.log('Evolution:', evolution, 'Poucentage;', pourcentage);
-                      } 
+                        const percentage = +difference.toFixed(2) + '%';
+                        const color = difference >= 0 
+                          ? "#2eb82e"
+                          : "#cc0000";
+                        this.series.chart.renderer.label(percentage, 20, 45)
+                          .add()
+                          .css({
+                            color: color,
+                            fontWeight: 600, 
+                          })
+                          .attr({
+                            fill: 'white',
+                            paddingRight: 50,
+                            paddingLeft: 8,
+                            paddingTop: 8,
+                            paddingBottom: 8,
+                          }); 
+                      }
                     } else {
                       evolution.length = 0;
                       // this.update({color:'yellow'})
-                      setTimeout(evolution.push(this.options), 1000);
-                      evolution.forEach(function(v){ delete v.color });
+                      setTimeout(evolution.push({["x"]: this.x, ["y"]:this.y}), 100);
                     }
-                  }
-                }
-              }, 
+                  },
+                },
+              },    
             }
           }
         })
@@ -201,10 +210,12 @@ function Stock() {
   }, []);
 
   // TO-DO:
-  // 1. voir pour ne changer que la couleur du point clique et pas tout le tooltip 
+  // 1. voir pour ne changer que la couleur du point clique et pas tout le tooltip (afficher les different points le long de la ligne et changer leur conleur? )
   //// 2. classer par date
-  // 3. Calculer evolution entre les deux valeurs
-  // 4. afficher dans un tooltip
+  // // 3. Calculer evolution entre les deux valeurs
+  // // 4. afficher les valeurs et leur evolution dans un tooltip
+ // 5. Revoir la position du pourcentage pour assurer qu'elle ne soit pas ecrasee par le graphe (peut-etre qu'au lieu d'une aire, je devrais le changer en simplement une ligne...?)
+ // 6. Ajouter des commentaires sur tout le travail fait a date
 
   // const handleClick = (chart) => {
   //   console.log(chart.point.options.y);
