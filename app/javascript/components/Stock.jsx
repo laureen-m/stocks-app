@@ -9,6 +9,7 @@ function Stock() {
   const [stock, setStock] = useState([]);
   const { id } = useParams(); // allows to fetch data of selected stock per id 
   const evolution = [];
+  const plotLines = [];
   const [chartOptions, setChartOptions] = useState({
     yAxis: [{
       labels: {
@@ -167,37 +168,51 @@ function Stock() {
           ],
           plotOptions: {
             series: {
+              marker: { // show individual points on the line of the graph
+                enabled: true,
+                fillColor: "#D6D6D6"
+              },
               point: {
                 events: {
                   click: function() {
                      if (evolution.length < 2) { 
-                      // this.update({color:'yellow'});
-                      setTimeout(evolution.push({["x"]: this.x, ["y"]:this.y}), 100);
-                      evolution.sort((a, b) => (a.x) - (b.x));
+                      plotLines.push(this.series.chart.xAxis[0].addPlotLine({ // add vertical line to show which point have been clicked on
+                        value: this.x,
+                        color: '#000063',
+                        width: 1,
+                      }));
+                      setTimeout(evolution.push({["x"]: this.x, ["y"]:this.y}), 100); // push points that have been clicked on to an array
+                      evolution.sort((a, b) => (a.x) - (b.x));  // reorder array chronologically 
                       if (evolution.length == 2 ) {
                         const difference = (evolution[1].y-evolution[0].y)/evolution[0].y*100;
-                        const percentage = +difference.toFixed(2) + '%';
+                        const percentage = +difference.toFixed(2) + '%'; // compte evolution between two points rounded to two decimal places
                         const color = difference >= 0 
                           ? "#2eb82e"
                           : "#cc0000";
-                        this.series.chart.renderer.label(percentage, 20, 45)
+                        this.series.chart.renderer.label(percentage, 0, 45) // render evolution between two points in red if negative and green if positive
                           .add()
                           .css({
                             color: color,
                             fontWeight: 600, 
                           })
-                          .attr({
-                            fill: 'white',
+                          .attr({ // background of the label
+                            fill: '#FFFFFF',
                             paddingRight: 50,
-                            paddingLeft: 8,
+                            paddingLeft: 50,
                             paddingTop: 8,
                             paddingBottom: 8,
+                            zIndex: 5
                           }); 
                       }
-                    } else {
+                    } else { // reset "state" and start a new array
                       evolution.length = 0;
-                      // this.update({color:'yellow'})
+                      this.series.chart.xAxis[0].removePlotLine()
                       setTimeout(evolution.push({["x"]: this.x, ["y"]:this.y}), 100);
+                      setTimeout(plotLines.push(this.series.chart.xAxis[0].addPlotLine({
+                        value: this.x,
+                        color: '#000063',
+                        width: 1,
+                      })), 100);
                     }
                   },
                 },
@@ -209,15 +224,7 @@ function Stock() {
       .catch(console.log);
   }, []);
 
-  // TO-DO:
-  // 1. voir pour ne changer que la couleur du point clique et pas tout le tooltip (afficher les different points le long de la ligne et changer leur conleur? )
-  //// 2. classer par date
-  // // 3. Calculer evolution entre les deux valeurs
-  // // 4. afficher les valeurs et leur evolution dans un tooltip
- // 5. Revoir la position du pourcentage pour assurer qu'elle ne soit pas ecrasee par le graphe (peut-etre qu'au lieu d'une aire, je devrais le changer en simplement une ligne...?)
- // 6. Ajouter des commentaires sur tout le travail fait a date
-
-  // const handleClick = (chart) => {
+  // const handleClick = (chart) => { // leave here as I'm considering moving the onClick function here (it might be cleaner and allow for using hooks?).
   //   console.log(chart.point.options.y);
   //   setSelectedValue(chart.point.options.y);
   // }; 
