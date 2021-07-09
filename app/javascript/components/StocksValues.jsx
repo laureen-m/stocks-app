@@ -249,20 +249,18 @@ function StocksValues() {
             </div>
             <div className="validation">
             <button onClick={handleClickSave} type="submit">Add data!</button>
-              { hasSucceeded === "yes" 
-                ? <div className="success">
+              { hasSucceeded === "yes" &&
+                (<div className="success">
                     <div className="pr1 close"><IoMdCheckmarkCircleOutline /></div>
                     <div className="close">{successMessage}</div>
                     <div className="pl4 pr0 pointer" onClick={() => {setHasSucceeded("")}}><RiCloseFill /></div>
-                  </div>
-                : hasSucceeded === "no" ?
-                  <div className="error">
+                  </div>)}
+              { hasSucceeded === "no" &&
+                  (<div className="error">
                     <div className="pr1 close"><BiErrorCircle /></div>
                     <div className="close">{errorMessage}</div>
                     <div className="pl4 pr0 pointer" onClick={() => {setHasSucceeded("")}}><RiCloseFill /></div>
-                  </div>
-                : <p></p>
-              }
+                  </div>)}
             </div>
           </form>  
         </div>
