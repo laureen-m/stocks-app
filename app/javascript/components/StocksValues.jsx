@@ -116,7 +116,8 @@ function StocksValues() {
   const [price, setPrice] = useState([]);
   const [volume, setVolume] = useState([]);
   const [stock_id, setStockId] = useState('');
-  const [message, setMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [hasSucceeded, setHasSucceeded] = useState('');
 
   useEffect(() => {
@@ -125,18 +126,6 @@ function StocksValues() {
       .then(data => setStocks(data))
       .catch(console.log)
   }, []);
-
-  const handleChangeStockId = (event) => {
-    setStockId(event.target.value);
-  }
-
-  const handleChangePrice = (event) => {
-    setPrice(event.target.value);
-  }
-
-  const handleChangeVolume = (event) => {
-    setVolume(event.target.value);
-  }
 
   /*const handleClick = () => {
     fetch("stocks_values/scrape", {
@@ -177,10 +166,10 @@ function StocksValues() {
   const handleClickSave = (event) => {
     event.preventDefault();
     if (stock_id === "" || price.length == 0 || volume.length == 0) {
-      setMessage('Empty fields.');
+      setErrorMessage('Empty fields.');
       setHasSucceeded("no");
     } else if (!price.includes("[") || !price.includes("]") || !volume.includes("[") || !volume.includes("]")) {
-      setMessage("The data entered should be in an array.");
+      setErrorMessage("The data entered should be in an array.");
       setHasSucceeded("no")
     } else {
       const parsedPrice = JSON.parse(price);
@@ -215,22 +204,12 @@ function StocksValues() {
           body: JSON.stringify(object)
         })
         .then((response) => response.json())
-        .then(data => {data ? [ setMessage("Data successfully saved!"), setHasSucceeded("yes") ] : [ setMessage("There was an error saving your data."), setHasSucceeded("no") ]})
+        .then(data => {data ? [ setSuccessMessage("Data successfully saved!"), setHasSucceeded("yes") ] : [ setErrorMessage("There was an error saving your data."), setHasSucceeded("no") ]})
         .catch(console.log)         
       }
       setPrice([]);
       setVolume([]);
     }
-  }
-
-  const handleClickClose = () => {
-    setHasSucceeded("")
-  }
-
-  const handleSubmit = () => {
-    //setStocks([]);
-    setPrice([]);
-    setVolume([]);
   }
 
   return (
@@ -241,13 +220,11 @@ function StocksValues() {
           <form>
             <div className="section">
               <label>Stock name</label>
-              <select onChange = {handleChangeStockId}>
-                <option>Select your stock</option>
-                { stocks.map(stocks => (
-                    /*<select key={stocks.id}>*/
-                      <option key={stocks.id} value={stocks.id} name="stock_id" required>{stocks.name}</option>
-                    /*</select>*/  
-                )) }
+              <select name="stocks" onChange = {(e) => {setStockId(e.target.value)}}>
+                <option value="">--Select your stock--</option>
+                {stocks.map(stocks => (
+                  <option key={stocks.id} value={stocks.id} required>{stocks.name}</option>
+                ))}
               </select>
             </div>
             <div className="section">
@@ -256,7 +233,7 @@ function StocksValues() {
                 name="price"
                 rows="15"
                 cols="50"
-                onChange={handleChangePrice}
+                onChange={(e) => {setPrice(e.target.value)}}
                 value={price}
               />
             </div>
@@ -266,23 +243,23 @@ function StocksValues() {
                 name="volume"
                 rows="15"
                 cols="50"
-                onChange={handleChangeVolume}
+                onChange={(e) => {setVolume(e.target.value)}}
                 value={volume}
               />
             </div>
             <div className="validation">
-              <button onClick={handleClickSave} type="submit">Add data!</button>
+            <button onClick={handleClickSave} type="submit">Add data!</button>
               { hasSucceeded === "yes" 
                 ? <div className="success">
                     <div className="pr1 close"><IoMdCheckmarkCircleOutline /></div>
-                    <div className="close">{message}</div>
-                    <div className="pl4 pr0 pointer" onClick={handleClickClose}><RiCloseFill /></div>
+                    <div className="close">{successMessage}</div>
+                    <div className="pl4 pr0 pointer" onClick={() => {setHasSucceeded("")}}><RiCloseFill /></div>
                   </div>
                 : hasSucceeded === "no" ?
                   <div className="error">
                     <div className="pr1 close"><BiErrorCircle /></div>
-                    <div className="close">{message}</div>
-                    <div className="pl4 pr0 pointer" onClick={handleClickClose}><RiCloseFill /></div>
+                    <div className="close">{errorMessage}</div>
+                    <div className="pl4 pr0 pointer" onClick={() => {setHasSucceeded("")}}><RiCloseFill /></div>
                   </div>
                 : <p></p>
               }
