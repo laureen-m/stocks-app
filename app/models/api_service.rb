@@ -8,7 +8,7 @@ class ApiService
   end
 
   def self.client
-    @client ||= Alphavantage::Client.new(key: ENV['ALPHA_VANTAGE_API_KEY'])
+    @client ||= Alphavantage::Client.new(key: Rails.application.credentials.alphavantage_client[:api_key])
   end
 
 end
