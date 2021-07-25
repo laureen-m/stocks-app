@@ -1,11 +1,14 @@
 class FetchStockValuesJob < ApplicationJob
   queue_as :default
 
-  def perform(api_value.stock_id)
-    value = api_value.find(stock_id)
-    value.prices = ApiService.fecth_prices(api_value.stock_id)
-    value.volumes = ApiService.fetch_volumes(api_value.stock_id)
-    value.save!
+  def perform(stock)
+    stock = ApiValue.find(ApiValue.stock_id)
+    stock.api_values = ApiService.fetch_values(ApiValue.stock.name)
+    stock.save!
   end
 
 end
+
+#values.each | m |
+#  company ApiService.fetch_values(stock)
+#  Api_value.save!
