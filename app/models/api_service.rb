@@ -2,17 +2,16 @@ class ApiService
   require 'pry'
   
   def self.fetch_values(ticker)
-    data = []
     value_prices = ApiService.client
             .stock(symbol: ticker)
             .timeseries(type: "intraday", outputsize: "full")
             .output["Time Series (1min)"]
-            .map { |k, v| {datetime: k, price: v["4. close"]} }
+            .map { |k, v| [{datetime: k, price: v["4. close"]}]
     value_volumes = ApiService.client
             .stock(symbol: ticker)
             .timeseries(type: "intraday", outputsize: "full")
             .output["Time Series (1min)"]
-            .map { |k, v| {datetime: k, volume: v["5. volume"]} }
+            .map { |k, v| [{datetime: k, volume: v["5. volume"]}] }
   end
 
   def self.client
@@ -66,4 +65,12 @@ price = all_data[]
 volume = all_data[]
 datetime = all_data[]
 stock_id = all_data[]
+
+
+
+value_volumes = ApiService.client
+            .stock(symbol: ticker)
+            .timeseries(type: "intraday", outputsize: "full")
+            .output["Time Series (1min)"]
+            .map { |k, v| [k, v["5. volume"]}] }
 =end
