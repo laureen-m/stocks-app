@@ -5,6 +5,7 @@ import Home from "../components/Home";
 import Stocks from "../components/Stocks";
 import Stock from "../components/Stock";
 import StocksValues from "../components/StocksValues";
+import StocksApiValues from "../components/StocksApiValues";
 
 export default (
   <Router>
@@ -13,6 +14,7 @@ export default (
       <Route path="/stocks" exact component={Stocks} />
       <Route path="/stocks/:id" exact component={Stock} />
       <Route path="/stocksvalues" exact component={StocksValues} />
+      <Route path="/stocksapivalues" exact component={StocksApiValues} />
     </Switch>
   </Router>
 );
