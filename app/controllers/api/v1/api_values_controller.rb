@@ -3,15 +3,18 @@ class Api::V1::ApiValuesController < ApplicationController
   end
 
   def create
-    # for each ApiService.fetch_values(ApiValue.stock.name)
-    # ApiValue.save!
-    
+    AlphaVantageApi.save_values(ticker)
+    if api_value
+      render json: api_value
+    else
+      render json: api_value.errors
+    end
   end
 
   private
 
-    def value_params
-      params.require(:value).permit(:stock_id, :date, :time, :price, :volume, :datetime)
+    def api_value_params
+      params.require(:api_value).permit(:stock_id, :price, :volume, :datetime)
     end
 
 end

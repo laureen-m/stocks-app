@@ -1,17 +1,16 @@
-class ApiService 
+class AlphaVantageApi 
   require 'pry'
   
   def self.fetch_values(ticker)
-    value_prices = ApiService.client
-            .stock(symbol: ticker)
-            .timeseries(type: "intraday", outputsize: "full")
-            .output["Time Series (1min)"]
-            .map { |k, v| [{datetime: k, price: v["4. close"]}]
-    value_volumes = ApiService.client
-            .stock(symbol: ticker)
-            .timeseries(type: "intraday", outputsize: "full")
-            .output["Time Series (1min)"]
-            .map { |k, v| [{datetime: k, volume: v["5. volume"]}] }
+    values = AlphaVantageApi.client.stock(symbol: ticker).timeseries(type: "intraday", outputsize: "full").output["Time Series (1min)"]
+  end
+
+  def self.save_values(ticker)
+    AlphaVantageApi.fetch_values(ticker) 
+    values.map { |k, v|  ApiValue.create!(:stock_id: stock_id, 
+                                 :price: v["4. close"], 
+                                 :volume: v["5. volume"], 
+                                 :datetime: k) }
   end
 
   def self.client
@@ -73,4 +72,17 @@ value_volumes = ApiService.client
             .timeseries(type: "intraday", outputsize: "full")
             .output["Time Series (1min)"]
             .map { |k, v| [k, v["5. volume"]}] }
-=end
+
+
+
+
+                      .map { |k, v| [{datetime: k, price: v["4. close"]}]
+    value_volumes = ApiService.client
+            .stock(symbol: ticker)
+            .timeseries(type: "intraday", outputsize: "full")
+            .output["Time Series (1min)"]
+            .map { |k, v| [{datetime: k, volume: v["5. volume"]}] }
+
+api_values=values.map { |k, v| {datetime: k, volume: v["5. volume"], price: v["4. close"]} }
+
+            =end
