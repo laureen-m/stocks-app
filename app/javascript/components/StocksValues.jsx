@@ -195,7 +195,7 @@ function StocksValues() {
       };
       for (var i = 0; i < data.length; i++) {
         object = data[i]
-
+        console.log(object)
         fetch("/api/v1/values/create", {
           method: "POST",
           headers: {

@@ -9,6 +9,3 @@ class FetchStockValuesJob < ApplicationJob
 
 end
 
-#values.each | m |
-#  company ApiService.fetch_values(stock)
-#  Api_value.save!

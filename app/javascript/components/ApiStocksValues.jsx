@@ -124,6 +124,7 @@ function StocksApiValues() {
 
   const handleClickSave = (event) => {
     event.preventDefault();
+    const object = {stock_id: stock_id}
     fetch("/api/v1/api_values/create", {
       method: "POST",
       headers: {

@@ -1,15 +1,22 @@
 class Api::V1::ApiValuesController < ApplicationController
+  require 'pry' 
+  
   def index
   end
 
   def create
-    AlphaVantageApi.save_values(ticker)
+    api_value = AlphaVantageApi.save_values(stock)
+    if api_value
+      render json: api_value
+    else
+      render json: api_value.errors
+    end
   end
 
   private
 
-    def api_value_params
-      params.require(:api_value).permit(:stock_id, :price, :volume, :datetime)
+    def stock
+      Stock.find(params[:stock_id])
     end
 
 end
