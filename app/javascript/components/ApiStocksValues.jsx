@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
-import { RiCloseFill } from 'react-icons/ri';
-import { BiErrorCircle } from 'react-icons/bi'; 
 import PageWrapper from './common/PageWrapper';
 
 const StocksValuesStyle = styled.div`
@@ -56,24 +53,15 @@ select:-moz-focusring {
   color: transparent;
   text-shadow: 0 0 0 black;
 }
-button, textarea {
+button {
   background-color: white;
   height: 40px;
   border-radius: 5px;
   border-style: none;
   margin: 15px;
-}
-button {
   padding: 5px 20px 5px 20px;
   cursor: pointer;
-}
-textarea {
-  width: 400px;
-  height: 100px;
-  padding: 5px;
-}
-button, textarea:focus {
-    outline: 0;
+  outline: 0;
 }
 label {
   width: 150px;
@@ -82,32 +70,6 @@ label {
   display: flex;
   flex-direction: row;
   align-items: center;
-}
-.validation {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.success {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background: rgb(237, 247, 237);
-  color: rgb(30, 70, 32);
-  padding: 0px 0px 10px 10px;
-  border-radius: 5px;
-}
-.error {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background: rgb(97, 26, 21);
-  color: rgb(253, 236, 234);
-  padding: 0px 0px 10px 10px;
-  border-radius: 5px;
-}
-.close {
-  padding-top: 10px;
 }
 `
 

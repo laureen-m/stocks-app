@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_10_175247) do
+ActiveRecord::Schema.define(version: 2021_07_31_160350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2021_07_10_175247) do
     t.datetime "datetime"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["datetime", "stock_id"], name: "index_api_values_on_datetime_and_stock_id"
   end
 
   create_table "stocks", force: :cascade do |t|
