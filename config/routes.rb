@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       get 'values/index'
       post 'values/create'
       get 'values/show'
+      post 'api_values/create'
       # post 'values/scrape'
     end
   end
